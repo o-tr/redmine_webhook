@@ -10,7 +10,7 @@ Redmine::Plugin.register :redmine_webhook do
   name 'Redmine Discord Webhook plugin'
   author 'ootr'
   description 'A Redmine plugin posts webhook on creating and updating tickets to Discord. original: https://github.com/suer/redmine_webhook'
-  version '0.0.6'
+  version '0.0.7'
   url 'https://github.com/o-tr/redmine_webhook'
   author_url 'https://github.com/o-tr'
   project_module :webhooks do
