@@ -9,13 +9,16 @@ module RedmineWebhook
     end
 
     def controller_issues_new_after_save(context = {})
+      Rails.logger.info "controller_issues_new_after_save"
       return if skip_webhooks(context)
       issue = context[:issue]
       controller = context[:controller]
       project = issue.project
       webhooks = Webhook.where(:project_id => project.project.id)
       webhooks = Webhook.where(:project_id => 0) unless webhooks && webhooks.length > 0
+      Rails.logger.info "webhooks: #{webhooks}"
       return unless webhooks
+      Rails.logger.info "issue_to_json: #{issue_to_json(issue, controller)}"
       post(webhooks, issue_to_json(issue, controller))
     end
 
@@ -55,22 +58,65 @@ module RedmineWebhook
     private
     def issue_to_json(issue, controller)
       {
-        :payload => {
-          :action => 'opened',
-          :issue => RedmineWebhook::IssueWrapper.new(issue).to_hash,
-          :url => controller.issue_url(issue)
-        }
+        :username => "Redmine",
+        :avatar_url => "https://avatars.githubusercontent.com/u/93662",
+        :embeds => [
+          {
+            :title => "#{issue.subject}",
+            :fields => [
+              {
+                :name => ":file_folder: project",
+                :value => issue.project.name,
+              },
+              {
+                :name => ":satellite: tracker",
+                :value => issue.tracker.name,
+              },
+              {
+                :name => ":bar_chart: status",
+                :value => issue.status.name,
+              },
+            ],
+            :description => issue.description,
+            :url => controller.issue_url(issue),
+            :timestamp => issue.created_on,
+            :author => {
+              :name => issue.author.name,
+            }
+          }
+        ]
       }.to_json
     end
 
     def journal_to_json(issue, journal, controller)
       {
-        :payload => {
-          :action => 'updated',
-          :issue => RedmineWebhook::IssueWrapper.new(issue).to_hash,
-          :journal => RedmineWebhook::JournalWrapper.new(journal).to_hash,
-          :url => controller.nil? ? 'not yet implemented' : controller.issue_url(issue)
-        }
+        :username => "Redmine",
+        :avatar_url => "https://avatars.githubusercontent.com/u/93662",
+        :embeds => [
+          {
+            :title => "#{issue.subject}",
+            :fields => [
+              {
+                :name => ":file_folder: project",
+                :value => issue.project.name,
+              },
+              {
+                :name => ":satellite: tracker",
+                :value => issue.tracker.name,
+              },
+              {
+                :name => ":bar_chart: status",
+                :value => issue.status.name,
+              },
+            ],
+            :description => issue.description,
+            :url => controller.issue_url(issue),
+            :timestamp => issue.created_on,
+            :author => {
+              :name => issue.author.name,
+            }
+          }
+        ]
       }.to_json
     end
 
