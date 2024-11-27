@@ -7,12 +7,12 @@ else
 end
 
 Redmine::Plugin.register :redmine_webhook do
-  name 'Redmine Webhook plugin'
-  author 'suer'
-  description 'A Redmine plugin posts webhook on creating and updating tickets'
-  version '0.0.5'
-  url 'https://github.com/suer/redmine_webhook'
-  author_url 'http://d.hatena.ne.jp/suer'
+  name 'Redmine Discord Webhook plugin'
+  author 'ootr'
+  description 'A Redmine plugin posts webhook on creating and updating tickets to Discord. original: https://github.com/suer/redmine_webhook'
+  version '0.0.6'
+  url 'https://github.com/o-tr/redmine_webhook'
+  author_url 'https://github.com/o-tr'
   project_module :webhooks do
     permission :manage_hook, {:webhook_settings => [:index, :show, :update, :create, :destroy]}, :require => :member
   end
