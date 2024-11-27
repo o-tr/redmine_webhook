@@ -62,19 +62,22 @@ module RedmineWebhook
         :avatar_url => "https://avatars.githubusercontent.com/u/93662",
         :embeds => [
           {
-            :title => "#{issue.subject}",
+            :title => "Created: #{issue.subject}",
             :fields => [
               {
                 :name => ":file_folder: project",
                 :value => issue.project.name,
+                :inline => true,
               },
               {
                 :name => ":satellite: tracker",
                 :value => issue.tracker.name,
+                :inline => true,
               },
               {
                 :name => ":bar_chart: status",
                 :value => issue.status.name,
+                :inline => true,
               },
             ],
             :description => issue.description,
@@ -94,7 +97,7 @@ module RedmineWebhook
         :avatar_url => "https://avatars.githubusercontent.com/u/93662",
         :embeds => [
           {
-            :title => "#{issue.subject}",
+            :title => "Changed: #{issue.subject}",
             :fields => [
               {
                 :name => ":file_folder: project",
